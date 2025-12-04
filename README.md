@@ -74,15 +74,6 @@ The script handles:
 - ✅ Multiple paths per plugin output
 - ✅ Rows with no paths (outputs empty path field)
 
-## 🤝 Contributing
-
-Found a bug? Have a path format that isn't detected? PRs welcome!
-
-1. Fork it
-2. Create your feature branch (`git checkout -b feature/infinite-improbability-paths`)
-3. Commit your changes (`git commit -am 'Add some paths'`)
-4. Push to the branch (`git push origin feature/infinite-improbability-paths`)
-5. Open a Pull Request
 
 Do what you want with it. If it saves you time, that's all the thanks needed.
 
