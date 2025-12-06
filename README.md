@@ -1,11 +1,11 @@
-# vogon-poetry-parser 🐬
+# vogon-poetry-parser
 
-> "For a moment, nothing happened. Then, after a second or so, nothing continued to happen." 
+> "For a moment, nothing happened. Then, after a second or so, nothing continued to happen."
 > — Unlike this parser, which actually does something useful.
 
 A PowerShell script that transforms chaotic Nessus CSV exports into clean, organized vulnerability path data. Like a Babel Fish for your security scans.
 
-## 🌌 What It Does
+## What It Does
 
 This script takes Nessus scanner CSV exports and:
 
@@ -13,15 +13,46 @@ This script takes Nessus scanner CSV exports and:
 - **Extracts all file paths** - Finds Windows paths (`C:\Program Files\app.exe`) and Linux paths (`/usr/lib/libssl.so`) from plugin output
 - **Handles messy formatting** - Works with `path:`, `path :`, and `path    :` variations
 - **Outputs clean CSV** - Produces a simple `Plugin, Severity, Hostname, Path` format
+- **Auto-opens results** - Opens the parsed CSV in your default application when complete
 
-## 📋 Requirements
+## Requirements
 
 - PowerShell 5.1 or later (Windows PowerShell or PowerShell Core)
+- Windows (for file picker dialog functionality)
 
-## 🚀 Usage
+## Usage
+
+### Full Manual Control
 ```powershell
 .\CSV_Parser.ps1 -InputFilePath "C:\nessus_export.csv" -OutputFilePath "C:\parsed_results.csv"
 ```
+
+### Auto-Generate Output Path
+```powershell
+.\CSV_Parser.ps1 -InputFilePath "C:\Scans\nessus_export.csv"
+# Creates: C:\Scans\nessus_export-parsed.csv
+```
+
+### File Picker Mode (No Parameters)
+```powershell
+.\CSV_Parser.ps1
+# Opens file picker dialog starting in script directory
+# Creates: <selected_directory>\<filename>-parsed.csv
+```
+
+### Debug Mode
+```powershell
+.\CSV_Parser.ps1 -DebugPreference Continue
+# Creates CSV_Parser_debug.log in the script directory
+```
+
+## Parameters
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `InputFilePath` | No | Path to input Nessus CSV. Opens file picker if not provided. |
+| `OutputFilePath` | No | Path for output CSV. Defaults to `<input>-parsed.csv` in same directory. |
+| `DebugPreference` | No | Set to `Continue` to enable debug logging. |
 
 ### Input Format
 
@@ -46,40 +77,34 @@ The script expects a Nessus CSV export with at least these columns:
 
 Each path gets its own row, so one input row with 3 paths becomes 3 output rows.
 
-## 🔧 Example
+## 🛠 Features
 
-**Input:**
-```csv
-Plugin,Severity,Plugin Output,DNS Name,Netbios Name
-10001,Critical,"Vulnerable software detected
-path: C:\Program Files\Java\bin\java.exe
-path: /usr/lib/jvm/java/bin/java",webserver01.corp.contoso.com,CORP\WEBSERVER01
-```
+| Feature | Description |
+|---------|-------------|
+|  File Picker | GUI dialog opens in script directory when no input specified |
+|  Smart Output Naming | Auto-generates output path with `-parsed.csv` suffix |
+|  Same Directory Output | Saves output alongside input file by default |
+|  Auto-Open Results | Opens parsed CSV in default application (Excel, etc.) |
+|  Debug Logging | Optional transcript logging for troubleshooting |
 
-**Output:**
-```csv
-Plugin,Severity,Hostname,Path
-10001,Critical,webserver01,C:\Program Files\Java\bin\java.exe
-10001,Critical,webserver01,/usr/lib/jvm/java/bin/java
-```
-
-## 🐛 Path Detection
+##  Path Detection
 
 The script handles:
 
-- ✅ Windows paths with spaces (`C:\Program Files (x86)\App\file.exe`)
-- ✅ Linux absolute paths (`/etc/shadow`)
-- ✅ Multiple drive letters (`C:\`, `D:\`, `E:\`)
-- ✅ Paths prefixed with `path:` (with variable whitespace)
-- ✅ Multiple paths per plugin output
-- ✅ Rows with no paths (outputs empty path field)
+-  Windows paths with spaces (`C:\Program Files (x86)\App\file.exe`)
+-  Linux absolute paths (`/etc/shadow`)
+-  Multiple drive letters (`C:\`, `D:\`, `E:\`)
+-  Paths prefixed with `path:` (with variable whitespace)
+-  Multiple paths per plugin output
+-  Rows with no paths (outputs empty path field)
 
+##  License
 
-Do what you want with it. If it saves you time, that's all the thanks needed.
+MIT License - Do what you want with it. If it saves you time, that's all the thanks needed.
 
 ## 🐬 So Long, and Thanks for All the Paths
 
-*"Time is an illusion. Lunchtime doubly so."*  
+*"Time is an illusion. Lunchtime doubly so."*
 *— But vulnerability remediation deadlines are very real.*
 
 ---
