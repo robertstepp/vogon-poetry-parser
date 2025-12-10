@@ -215,6 +215,7 @@ function Import-NessusCSV {
         $paths = Get-PathsFromOutput -pluginOutput $row.'Plugin Output'
         $plugin = $row.'Plugin'
         $severity = $row.'Severity'
+        $ipAddress = $row.'IP Address'
 
         if ($paths.Count -gt 0) {
             foreach ($path in $paths) {
@@ -222,6 +223,7 @@ function Import-NessusCSV {
                     Plugin   = $plugin
                     Severity = $severity
                     Hostname = $hostname
+                    'IP Address' = $ipAddress
                     Path     = $path
                 }
                 $parsedResults += $result
@@ -232,6 +234,7 @@ function Import-NessusCSV {
                 Plugin   = $plugin
                 Severity = $severity
                 Hostname = $hostname
+                'IP Address' = $ipAddress
                 Path     = ""
             }
             $parsedResults += $result
